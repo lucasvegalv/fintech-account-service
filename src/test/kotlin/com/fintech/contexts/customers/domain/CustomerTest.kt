@@ -8,15 +8,16 @@ import org.junit.jupiter.api.assertThrows
 
 class CustomerTest {
 
+    private val customerLocation: Address = Address(
+        countryCode = "ARG",
+        city = "Buenos Aires",
+        street = "Bonpland 2895",
+        zipCode = "1405"
+    )
+
     @Test
     fun `should register a new customer just if all the required field were defined` () {
         // setup
-        val customerLocation: Address = Address(
-            countryCode = "ARG",
-            city = "Buenos Aires",
-            street = "Bonpland 2895",
-            zipCode = "1405"
-        )
         val customer: Customer = Customer(
             name = "Lucas",
             lastname = "Vega",
@@ -32,14 +33,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Name field is blank` () {
-        // setup
-        val customerLocation: Address = Address(
-            countryCode = "ARG",
-            city = "Buenos Aires",
-            street = "Bonpland 2895",
-            zipCode = "1405"
-        )
-
         //exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java){
             Customer(
@@ -58,14 +51,6 @@ class CustomerTest {
     // TODO: Should reject registration if Name field is just chars
     @Test
     fun `should reject registration if Name field is not just characters` () {
-        // setup
-        val customerLocation: Address = Address(
-            countryCode = "ARG",
-            city = "Buenos Aires",
-            street = "Bonpland 2895",
-            zipCode = "1405"
-        )
-
         // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java){
             Customer(
@@ -83,14 +68,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Name field is more than 50 characters length` () {
-        // setup
-        val customerLocation: Address = Address(
-            countryCode = "ARG",
-            city = "Buenos Aires",
-            street = "Bonpland 2895",
-            zipCode = "1405"
-        )
-
         // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java){
             Customer(
