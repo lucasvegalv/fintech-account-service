@@ -1,7 +1,10 @@
 package com.fintech.contexts.customers.domain
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class CustomerTest {
 
@@ -27,11 +30,82 @@ class CustomerTest {
         assertTrue(customer.hasThisDNI("44324489"))
     }
 
-
-    // TODO: Should reject registration if Name field is invalid (not empty - just chars - max 50 )
     @Test
+    fun `should reject registration if Name field is blank` () {
+        // setup
+        val customerLocation: Address = Address(
+            countryCode = "ARG",
+            city = "Buenos Aires",
+            street = "Bonpland 2895",
+            zipCode = "1405"
+        )
 
+        //exercise & assert
+        val exception = assertThrows(IllegalArgumentException::class.java){
+            Customer(
+                name = "",
+                lastname = "Vega",
+                address = customerLocation,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
 
+        assertEquals(exception.message, "Name must not be blank.")
+    }
+
+    // TODO: Should reject registration if Name field is just chars
+    @Test
+    fun `should reject registration if Name field is not just characters` () {
+        // setup
+        val customerLocation: Address = Address(
+            countryCode = "ARG",
+            city = "Buenos Aires",
+            street = "Bonpland 2895",
+            zipCode = "1405"
+        )
+
+        // exercise & assert
+        val exception = assertThrows(IllegalArgumentException::class.java){
+            Customer(
+                name = "Lucas123",
+                lastname = "Vega",
+                address = customerLocation,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
+
+        assertEquals(exception.message, "Name must not contain any alphanumeric characters.")
+    }
+
+    // TODO: Should reject registration if Name field is max 50 chars length
+    @Test
+    fun `should reject registration if Name field is more than 50 characters length` () {
+        // setup
+        val customerLocation: Address = Address(
+            countryCode = "ARG",
+            city = "Buenos Aires",
+            street = "Bonpland 2895",
+            zipCode = "1405"
+        )
+
+        // exercise & assert
+        val exception = assertThrows(IllegalArgumentException::class.java){
+            Customer(
+                name = "Lucaslucaslucaslucaslucaslucas",
+                lastname = "Vega",
+                address = customerLocation,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
+
+        assertEquals(exception.message, "Name must not have more than 50 characters.")
+    }
     // TODO: Should reject registration if Lastname field is invalid ( not empty - just chars - max 50 )
 
     // TODO: Should reject registration if DNI field is invalid (just numbers)
