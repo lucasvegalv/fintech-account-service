@@ -81,7 +81,6 @@ class CustomerTest {
         assertEquals(exception.message, "Name must not contain any alphanumeric characters.")
     }
 
-    // TODO: Should reject registration if Name field is max 50 chars length
     @Test
     fun `should reject registration if Name field is more than 50 characters length` () {
         // setup

@@ -12,6 +12,7 @@ class Customer(
     init {
         require(name.isNotBlank()) {"Name must not be blank."}
         require(!name.contains(Regex("\\d"))) {"Name must not contain any alphanumeric characters."}
+        require(name.length <= 20){"Name must not have more than 50 characters."}
     }
 
 
