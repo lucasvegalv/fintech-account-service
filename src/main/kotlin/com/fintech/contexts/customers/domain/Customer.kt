@@ -25,4 +25,8 @@ class Customer(
     fun hasThisDNI(dniToCompareWith: String): Boolean {
         return this.dni == dniToCompareWith
     }
+
+    fun isActive(): Boolean {
+        return true
+    }
 }

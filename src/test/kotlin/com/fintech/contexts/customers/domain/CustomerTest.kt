@@ -8,7 +8,7 @@ import org.junit.jupiter.api.assertThrows
 
 class CustomerTest {
 
-    private val customerLocation: Address = Address(
+    private val customerAddress: Address = Address(
         countryCode = "ARG",
         city = "Buenos Aires",
         street = "Bonpland 2895",
@@ -21,7 +21,7 @@ class CustomerTest {
         val customer: Customer = Customer(
             name = "Lucas",
             lastname = "Vega",
-            address = customerLocation,
+            address = customerAddress,
             dni = "44324489",
             phone = "1158837671",
             email = "lucas@pomelo.la"
@@ -38,7 +38,7 @@ class CustomerTest {
             Customer(
                 name = "",
                 lastname = "Vega",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "44324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -56,7 +56,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas123",
                 lastname = "Vega",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "44324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -73,7 +73,7 @@ class CustomerTest {
             Customer(
                 name = "Lucaslucaslucaslucaslucaslucas",
                 lastname = "Vega",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "44324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -90,7 +90,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas",
                 lastname = "",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "44324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -107,7 +107,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas",
                 lastname = "Vega123",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "44324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -124,7 +124,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas",
                 lastname = "VegavegavegavegaotroapellidounpellidoVegavegavegavegaotroapellidounpellido",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "44324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -140,7 +140,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas",
                 lastname = "Vega",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -156,7 +156,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas",
                 lastname = "Vega",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "Lucas44553830",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -174,7 +174,7 @@ class CustomerTest {
             Customer(
                 name = "Lucas",
                 lastname = "Vega",
-                address = customerLocation,
+                address = customerAddress,
                 dni = "4432448944324489",
                 phone = "1158837671",
                 email = "lucas@pomelo.la"
@@ -184,12 +184,24 @@ class CustomerTest {
         assertEquals(exception.message, "DNI must not contain more than 15 digits.")
     }
 
+    @Test
+    fun `should register a new customer with status 'ACTIVE'`() {
+        val customer = Customer(
+            name = "Lucas",
+            lastname = "Vega",
+            address = customerAddress,
+            dni = "44324489",
+            phone = "1158837671",
+            email = "lucas@pomelo.la"
+        )
 
-    // TODO: Should register a new customer with status ACTIVE
+        assertTrue(customer.isActive())
+    }
+
+// TODO: Should desactivate a customer just if he/she is ACTIVE
 
     // TODO: Should register a new customer with cero accounts related
 
-    // TODO: Should desactivate a customer just if he/she is ACTIVE
 
     // TODO: Should reject desactivation if the customer has active accounts
 
