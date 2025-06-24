@@ -48,7 +48,7 @@ class CustomerTest {
         assertEquals(exception.message, "Name must not be blank.")
     }
 
-    // TODO: Should reject registration if Name field is just chars
+    // TODO: Should reject registration if Name field is not just chars
     @Test
     fun `should reject registration if Name field is not just characters` () {
         // exercise & assert
@@ -80,11 +80,64 @@ class CustomerTest {
             )
         }
 
-        assertEquals(exception.message, "Name must not have more than 50 characters.")
+        assertEquals(exception.message, "Name must not have more than 20 characters.")
     }
-    // TODO: Should reject registration if Lastname field is invalid ( not empty - just chars - max 50 )
 
-    // TODO: Should reject registration if DNI field is invalid (just numbers)
+    @Test
+    fun `should reject registration if Lastname field is blank` () {
+        // exercise & assert
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            Customer(
+                name = "Lucas",
+                lastname = "",
+                address = customerLocation,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
+
+        assertEquals(exception.message, "Last name must not be blank.")
+    }
+
+    @Test
+    fun `should reject registration if Lastname field is not just characters` () {
+        // exercise & assert
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            Customer(
+                name = "Lucas",
+                lastname = "Vega123",
+                address = customerLocation,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
+
+        assertEquals(exception.message, "Last Name must not contain any alphanumeric characters.")
+    }
+
+    @Test
+    fun `should reject registration if Lastname field is more than 50 characters length` () {
+        // exercise & assert
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            Customer(
+                name = "Lucas",
+                lastname = "VegavegavegavegaotroapellidounpellidoVegavegavegavegaotroapellidounpellido",
+                address = customerLocation,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
+
+        assertEquals(exception.message, "Last Name must not have more than 30 characters.")
+    }
+
+    // TODO: Should reject registration if DNI field is blank
+    // TODO: Should reject registration if DNI field is not just numbers
+    // TODO: Should reject registration if DNI field is more than 15 digits length
+
 
     // TODO: Should register a new customer with status ACTIVE
 
