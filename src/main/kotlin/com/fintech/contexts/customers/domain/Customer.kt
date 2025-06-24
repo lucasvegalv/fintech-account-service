@@ -9,6 +9,8 @@ class Customer(
     private val email: String
 ) {
 
+    private var status: CustomerStatus
+
     init {
         require(name.isNotBlank()) {"Name must not be blank."}
         require(!name.contains(Regex("\\d"))) {"Name must not contain any alphanumeric characters."}
@@ -19,6 +21,8 @@ class Customer(
         require(dni.isNotBlank()) {"DNI must not be blank."}
         require(dni.all { it.isDigit() }) {"DNI must not contain just digits."}
         require(dni.length <= 15) {"DNI must not contain more than 15 digits."}
+
+        status = CustomerStatus.ACTIVE
     }
 
 
@@ -26,7 +30,13 @@ class Customer(
         return this.dni == dniToCompareWith
     }
 
-    fun isActive(): Boolean {
-        return true
+    fun isActive(): Boolean = this.status == CustomerStatus.ACTIVE
+
+
+    fun desactivate() {
+        require(this.isActive()) {"Can not desactivate a customer if it is not ACTIVE"}
+        this.status = CustomerStatus.DESACTIVATED
     }
+
+    fun isDesactivated(): Boolean = this.status == CustomerStatus.DESACTIVATED
 }

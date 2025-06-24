@@ -198,7 +198,24 @@ class CustomerTest {
         assertTrue(customer.isActive())
     }
 
-// TODO: Should desactivate a customer just if he/she is ACTIVE
+    // TODO: Should desactivate a customer with status 'ACTIVE'
+    @Test
+    fun `should desactivate a customer with status 'ACTIVE''`() {
+        val customer = Customer(
+            name = "Lucas",
+            lastname = "Vega",
+            address = customerAddress,
+            dni = "44324489",
+            phone = "1158837671",
+            email = "lucas@pomelo.la"
+        )
+
+        assertTrue(customer.isActive())
+
+        customer.desactivate()
+
+        assertTrue(customer.isDesactivated())
+    }
 
     // TODO: Should register a new customer with cero accounts related
 
