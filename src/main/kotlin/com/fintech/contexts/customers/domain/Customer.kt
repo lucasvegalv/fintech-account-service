@@ -17,6 +17,8 @@ class Customer(
         require(!lastname.contains(Regex("\\d"))) {"Last Name must not contain any alphanumeric characters."}
         require(lastname.length <= 30){"Last Name must not have more than 30 characters."}
         require(dni.isNotBlank()) {"DNI must not be blank."}
+        require(dni.all { it.isDigit() }) {"DNI must not contain just digits."}
+        require(dni.length <= 15) {"DNI must not contain more than 15 digits."}
     }
 
 
