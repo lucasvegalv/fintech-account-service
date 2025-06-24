@@ -1,5 +1,7 @@
 package com.fintech.contexts.customers.domain
 
+import com.fintech.contexts.accounts.domain.Account
+
 class Customer(
     private val name: String,
     private val lastname: String,
@@ -9,6 +11,7 @@ class Customer(
     private val email: String
 ) {
 
+    private val accounts: MutableSet<Account> = mutableSetOf()
     private var status: CustomerStatus
 
     init {
@@ -33,10 +36,12 @@ class Customer(
     fun isActive(): Boolean = this.status == CustomerStatus.ACTIVE
 
 
-    fun desactivate() {
+    fun deactivate() {
         require(this.isActive()) {"Can not desactivate a customer if it is not ACTIVE"}
         this.status = CustomerStatus.DESACTIVATED
     }
 
     fun isDesactivated(): Boolean = this.status == CustomerStatus.DESACTIVATED
+
+    fun hasAnyAccounts(): Boolean = this.accounts.size > 0
 }

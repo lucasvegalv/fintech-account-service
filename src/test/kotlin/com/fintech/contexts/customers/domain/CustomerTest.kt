@@ -1,6 +1,7 @@
 package com.fintech.contexts.customers.domain
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -212,12 +213,24 @@ class CustomerTest {
 
         assertTrue(customer.isActive())
 
-        customer.desactivate()
+        customer.deactivate()
 
         assertTrue(customer.isDesactivated())
     }
 
-    // TODO: Should register a new customer with cero accounts related
+    @Test
+    fun `should register a new customer with cero accounts related`() {
+        val customer = Customer(
+            name = "Lucas",
+            lastname = "Vega",
+            address = customerAddress,
+            dni = "44324489",
+            phone = "1158837671",
+            email = "lucas@pomelo.la"
+        )
+
+        assertFalse(customer.hasAnyAccounts())
+    }
 
 
     // TODO: Should reject desactivation if the customer has active accounts
