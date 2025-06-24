@@ -135,6 +135,22 @@ class CustomerTest {
     }
 
     // TODO: Should reject registration if DNI field is blank
+    @Test
+    fun `should reject registration if DNI field is blank` () {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            Customer(
+                name = "Lucas",
+                lastname = "Vega",
+                address = customerLocation,
+                dni = "",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+        }
+
+        assertEquals(exception.message, "DNI must not be blank.")
+    }
+
     // TODO: Should reject registration if DNI field is not just numbers
     // TODO: Should reject registration if DNI field is more than 15 digits length
 
