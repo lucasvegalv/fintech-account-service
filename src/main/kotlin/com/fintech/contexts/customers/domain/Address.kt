@@ -8,5 +8,6 @@ data class Address(
 ) {
     init{
         require(this.city.isNotBlank()) {"City can not be blank"}
+        require(this.street.isNotBlank()) {"Street can not be blank"}
     }
 }
