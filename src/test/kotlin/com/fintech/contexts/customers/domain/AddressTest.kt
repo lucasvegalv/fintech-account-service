@@ -45,11 +45,22 @@ class AddressTest {
         assertEquals(exception.message, "Street can not be blank")
     }
 
-    // TODO: Should reject address creation if city field is blank
+    // TODO: Should reject address creation if zipCode field is blank
+    @Test
+    fun `should reject address creation if zip code field is blank`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            val address = Address(
+                countryCode = CountryCodes.ARG,
+                city = "Buenos Aires",
+                street = "Av. Corrientes",
+                zipCode = ""
+            )
+        }
+
+        assertEquals(exception.message, "Zip Code can not be blank")
+    }
 
     // TODO: Should reject address creation if city field has numbers
-
-    // TODO: Should reject address creation if zipCode field is blank
 
     // TODO: Should reject address creation if city field has characters
 
