@@ -10,5 +10,6 @@ data class Address(
         require(this.city.isNotBlank()) {"City can not be blank"}
         require(this.street.isNotBlank()) {"Street can not be blank"}
         require(this.zipCode.isNotBlank()) {"Zip Code can not be blank"}
+        require(!this.city.contains(Regex("\\d"))) {"City should not include numbers"}
     }
 }
