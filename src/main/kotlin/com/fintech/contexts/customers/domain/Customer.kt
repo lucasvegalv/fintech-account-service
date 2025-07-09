@@ -11,6 +11,7 @@ class Customer(
     private val email: String
 ) {
 
+    private val customerId = CustomerId.generate()
     private val accounts: MutableSet<Account> = mutableSetOf()
     private var status: CustomerStatus
 
@@ -41,4 +42,6 @@ class Customer(
     fun isDeactivated(): Boolean = this.status == CustomerStatus.DEACTIVATED
 
     fun hasAnyAccounts(): Boolean = this.accounts.size > 0
+
+    fun hasValidUUID(): Boolean = this.customerId.value.startsWith("cus")
 }
