@@ -29,19 +29,16 @@ class Customer(
     }
 
 
-    fun hasThisDNI(dniToCompareWith: String): Boolean {
-        return this.dni == dniToCompareWith
-    }
+    fun hasThisDNI(dniToCompareWith: String): Boolean = this.dni == dniToCompareWith
 
     fun isActive(): Boolean = this.status == CustomerStatus.ACTIVE
 
-
     fun deactivate() {
-        require(this.isActive()) {"Can not desactivate a customer if it is not ACTIVE"}
-        this.status = CustomerStatus.DESACTIVATED
+        require(this.isActive()) {"Can not deactivate a customer if it is not ACTIVE"}
+        this.status = CustomerStatus.DEACTIVATED
     }
 
-    fun isDesactivated(): Boolean = this.status == CustomerStatus.DESACTIVATED
+    fun isDeactivated(): Boolean = this.status == CustomerStatus.DEACTIVATED
 
     fun hasAnyAccounts(): Boolean = this.accounts.size > 0
 }

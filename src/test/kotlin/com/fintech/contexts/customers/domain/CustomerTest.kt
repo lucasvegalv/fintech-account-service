@@ -1,16 +1,11 @@
 package com.fintech.contexts.customers.domain
-
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class CustomerTest {
 
     private val customerAddress: Address = Address(
-        countryCode = "ARG",
+        countryCode = CountryCodes.ARG,
         city = "Buenos Aires",
         street = "Bonpland 2895",
         zipCode = "1405"
@@ -34,7 +29,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Name field is blank` () {
-        //exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java){
             Customer(
                 name = "",
@@ -49,10 +43,8 @@ class CustomerTest {
         assertEquals(exception.message, "Name must not be blank.")
     }
 
-    // TODO: Should reject registration if Name field is not just chars
     @Test
     fun `should reject registration if Name field is not just characters` () {
-        // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java){
             Customer(
                 name = "Lucas123",
@@ -69,7 +61,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Name field is more than 50 characters length` () {
-        // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java){
             Customer(
                 name = "Lucaslucaslucaslucaslucaslucas",
@@ -86,7 +77,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Lastname field is blank` () {
-        // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Customer(
                 name = "Lucas",
@@ -103,7 +93,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Lastname field is not just characters` () {
-        // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Customer(
                 name = "Lucas",
@@ -120,7 +109,6 @@ class CustomerTest {
 
     @Test
     fun `should reject registration if Lastname field is more than 50 characters length` () {
-        // exercise & assert
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Customer(
                 name = "Lucas",
@@ -167,8 +155,6 @@ class CustomerTest {
         assertEquals(exception.message, "DNI must not contain just digits.")
     }
 
-
-    // TODO: Should reject registration if DNI field is more than 15 digits length
     @Test
     fun `should reject registration if DNI field is more than 15 digits length` () {
         val exception = assertThrows(IllegalArgumentException::class.java) {
@@ -199,7 +185,6 @@ class CustomerTest {
         assertTrue(customer.isActive())
     }
 
-    // TODO: Should desactivate a customer with status 'ACTIVE'
     @Test
     fun `should desactivate a customer with status 'ACTIVE''`() {
         val customer = Customer(
@@ -215,7 +200,7 @@ class CustomerTest {
 
         customer.deactivate()
 
-        assertTrue(customer.isDesactivated())
+        assertTrue(customer.isDeactivated())
     }
 
     @Test
@@ -233,7 +218,7 @@ class CustomerTest {
     }
 
 
-    // TODO: Should reject desactivation if the customer has active accounts
+    // TODO: Should reject deactivation if the customer has active accounts
 
     // TODO: Should reject registration if there's a user already registered with the same DNI
 }
