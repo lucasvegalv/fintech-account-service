@@ -12,9 +12,8 @@ class CustomerTest {
     )
 
     @Test
-    fun `should register a new customer just if all the required field were defined` () {
-        // setup
-        val customer: Customer = Customer(
+    fun `should create a customer with a UUI`(){
+        val customer = Customer(
             name = "Lucas",
             lastname = "Vega",
             address = customerAddress,
@@ -23,7 +22,20 @@ class CustomerTest {
             email = "lucas@pomelo.la"
         )
 
-        // exercise & assert
+        assertTrue(customer.hasValidUUID())
+
+    }
+
+    @Test
+    fun `should register a new customer just if all the required field were defined` () {
+        val customer: Customer = Customer(
+            name = "Lucas",
+            lastname = "Vega",
+            address = customerAddress,
+            dni = "44324489",
+            phone = "1158837671",
+            email = "lucas@pomelo.la"
+        )
         assertTrue(customer.hasThisDNI("44324489"))
     }
 
