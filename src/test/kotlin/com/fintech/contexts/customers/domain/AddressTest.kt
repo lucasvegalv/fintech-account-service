@@ -72,6 +72,5 @@ class AddressTest {
 
         assertEquals(exception.message, "City should not include numbers")
     }
-    // TODO: Should reject address creation if city field has characters
 
 }
