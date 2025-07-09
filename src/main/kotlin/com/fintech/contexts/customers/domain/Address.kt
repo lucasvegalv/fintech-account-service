@@ -5,4 +5,8 @@ data class Address(
     private val city: String,
     private val street: String,
     private val zipCode: String
-)
+) {
+    init{
+        require(this.city.isNotBlank()) {"City can not be blank"}
+    }
+}
