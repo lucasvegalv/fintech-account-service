@@ -11,7 +11,7 @@ class Customer(
     private val email: String
 ) {
 
-    private val customerId = CustomerId.generate()
+    val customerId = CustomerId.generate()
     private val accounts: MutableSet<Account> = mutableSetOf()
     private var status: CustomerStatus
 
