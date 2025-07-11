@@ -1,23 +1,46 @@
 package com.fintech.contexts.accounts.domain
 
+import com.fintech.contexts.customers.domain.CustomerId
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
+import java.util.*
+
 class AccountTest {
 
-    //    account id
-    // TODO -> account id valid que empiece con 'acc-'
+    @Test
+    fun `should be created with an account number of twelve digits`() {
+        val customerIdForTests = CustomerId.generate()
+        val account = Account(
+            currency = Currency.USD,
+            holder = customerIdForTests
+        )
 
-    //    account number
-    // TODO -> account number no sea null
-    // TODO -> account number sean solo numeros
-    // TODO -> account number tenga una long de 12 digitos
+        assertTrue(account.hasAValidAccountNumber())
+    }
 
-    //    currency
-    // TODO -> currency sea ARS/BRA/USD
+    @Test
+    fun `should be created with a UUID that starts with 'acc'`() {
+        val customerIdForTests = CustomerId.generate()
+        val account = Account(
+            currency = Currency.USD,
+            holder = customerIdForTests
+        )
 
-    //    holder (customer id)
-    // TODO -> holder id comience con 'cus'
+        assertTrue(account.hasValidUUID())
+    }
 
     //    transactions
     // TODO -> que al crearse la cuenta tenga un listado de 0 transacciones
+    @Test
+    fun `should have no transactions when just created`() {
+        val customerIdForTests = CustomerId.generate()
+        val account = Account(
+            currency = Currency.USD,
+            holder = customerIdForTests
+        )
+
+        assertFalse(account.hasTransactions())
+    }
 
     // TODO -> si la transaccion es de tipo DEPOSIT, REFUND o REVERSAL, el balance debe incrementarse
 

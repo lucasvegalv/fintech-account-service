@@ -6,7 +6,7 @@ data class AccountId(val value: String) {
     companion object {
         fun generate(): AccountId {
           val value = UUID.randomUUID().toString()
-          return AccountId("txn-$value")
+          return AccountId("acc-$value")
 
         }
     }

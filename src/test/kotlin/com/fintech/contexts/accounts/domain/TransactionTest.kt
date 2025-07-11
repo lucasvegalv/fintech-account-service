@@ -27,7 +27,7 @@ class TransactionTest {
     )
 
     val account = Account(
-        currency = Currency.getInstance("ARS"),
+        currency = Currency.ARS,
         holder = customer.customerId // TODO -> Fix this encapsulation break of customer
     )
 
@@ -36,7 +36,7 @@ class TransactionTest {
     fun `should be created with a UUID that starts with 'txn'`() {
         val transaction = Transaction(
             amount = BigDecimal(50.00),
-            currency = Currency.getInstance("ARS"),
+            currency = Currency.ARS,
             type = TransactionType.DEPOSIT
         )
 
@@ -48,7 +48,7 @@ class TransactionTest {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Transaction(
                     amount = BigDecimal(-50.00),
-                    currency = Currency.getInstance("ARS"),
+                    currency = Currency.ARS,
                     type = TransactionType.DEPOSIT
             )
         }
