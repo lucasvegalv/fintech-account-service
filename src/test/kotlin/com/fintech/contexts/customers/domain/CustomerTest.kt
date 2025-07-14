@@ -11,32 +11,24 @@ class CustomerTest {
         zipCode = "1405"
     )
 
+    private val validCustomer: Customer = Customer (
+                name = "Lucas",
+                lastname = "Vega",
+                address = customerAddress,
+                dni = "44324489",
+                phone = "1158837671",
+                email = "lucas@pomelo.la"
+            )
+
     @Test
     fun `should create a customer with a UUI`(){
-        val customer = Customer(
-            name = "Lucas",
-            lastname = "Vega",
-            address = customerAddress,
-            dni = "44324489",
-            phone = "1158837671",
-            email = "lucas@pomelo.la"
-        )
-
-        assertTrue(customer.hasValidUUID())
+        assertTrue(validCustomer.hasValidUUID())
 
     }
 
     @Test
     fun `should register a new customer just if all the required field were defined` () {
-        val customer: Customer = Customer(
-            name = "Lucas",
-            lastname = "Vega",
-            address = customerAddress,
-            dni = "44324489",
-            phone = "1158837671",
-            email = "lucas@pomelo.la"
-        )
-        assertTrue(customer.hasThisDNI("44324489"))
+        assertTrue(validCustomer.hasThisDNI("44324489"))
     }
 
     @Test
@@ -185,48 +177,19 @@ class CustomerTest {
 
     @Test
     fun `should register a new customer with status 'ACTIVE'`() {
-        val customer = Customer(
-            name = "Lucas",
-            lastname = "Vega",
-            address = customerAddress,
-            dni = "44324489",
-            phone = "1158837671",
-            email = "lucas@pomelo.la"
-        )
-
-        assertTrue(customer.isActive())
+        assertTrue(validCustomer.isActive())
     }
 
     @Test
     fun `should desactivate a customer with status 'ACTIVE''`() {
-        val customer = Customer(
-            name = "Lucas",
-            lastname = "Vega",
-            address = customerAddress,
-            dni = "44324489",
-            phone = "1158837671",
-            email = "lucas@pomelo.la"
-        )
-
-        assertTrue(customer.isActive())
-
-        customer.deactivate()
-
-        assertTrue(customer.isDeactivated())
+        assertTrue(validCustomer.isActive())
+        validCustomer.deactivate()
+        assertTrue(validCustomer.isDeactivated())
     }
 
     @Test
     fun `should register a new customer with cero accounts related`() {
-        val customer = Customer(
-            name = "Lucas",
-            lastname = "Vega",
-            address = customerAddress,
-            dni = "44324489",
-            phone = "1158837671",
-            email = "lucas@pomelo.la"
-        )
-
-        assertFalse(customer.hasAnyAccounts())
+        assertFalse(validCustomer.hasAnyAccounts())
     }
 
 
