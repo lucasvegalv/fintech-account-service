@@ -23,15 +23,13 @@ class AccountTest {
         assertTrue(account.hasValidUUID())
     }
 
-    //    transactions
-    // TODO -> que al crearse la cuenta tenga un listado de 0 transacciones
+
     @Test
     fun `should have no transactions when just created`() {
         val account = account
         assertFalse(account.hasTransactions())
     }
 
-    // TODO -> si la transaccion es de tipo DEPOSIT, REFUND o REVERSAL, el balance debe incrementarse
     @Test
     fun `should increment balance if transaction is a deposit, refund or reversal`() {
         val account = account
@@ -46,10 +44,10 @@ class AccountTest {
     }
 
     // TODO -> si la transaccion es de tipo WITHDRAWAL, PURCHASE, FEE, el balance debe reducirse
-    @Test
-    fun `should increment balance if transaction is a withdrawal, purchase or fee`() {
-
-    }
+//    @Test
+//    fun `should increment balance if transaction is a withdrawal, purchase or fee`() {
+//
+//    }
 
     // TODO -> nunca puede ser con un monto negativo
 

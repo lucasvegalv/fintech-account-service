@@ -3,6 +3,7 @@ package com.fintech.contexts.accounts.domain
 import com.fintech.contexts.customers.domain.Address
 import com.fintech.contexts.customers.domain.CountryCodes
 import com.fintech.contexts.customers.domain.Customer
+import com.fintech.contexts.customers.domain.CustomerId
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.math.BigDecimal
@@ -26,9 +27,11 @@ class TransactionTest {
         email = "lucas@pomelo.la"
     )
 
+    private val customerId: CustomerId = CustomerId.generate()
+
     val account = Account(
         currency = Currency.ARS,
-        holder = customer.customerId // TODO -> Fix this encapsulation break of customer
+        holder = customerId
     )
 
 
