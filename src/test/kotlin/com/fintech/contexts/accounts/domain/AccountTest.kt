@@ -3,29 +3,23 @@ package com.fintech.contexts.accounts.domain
 import com.fintech.contexts.customers.domain.CustomerId
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import java.math.BigDecimal
 import java.util.*
 
 class AccountTest {
 
+    private val customerId: CustomerId = CustomerId.generate()
+    private val account: Account = Account (currency = Currency.USD, holder = customerId)
+
     @Test
     fun `should be created with an account number of twelve digits`() {
-        val customerIdForTests = CustomerId.generate()
-        val account = Account(
-            currency = Currency.USD,
-            holder = customerIdForTests
-        )
-
+        val account = account
         assertTrue(account.hasAValidAccountNumber())
     }
 
     @Test
     fun `should be created with a UUID that starts with 'acc'`() {
-        val customerIdForTests = CustomerId.generate()
-        val account = Account(
-            currency = Currency.USD,
-            holder = customerIdForTests
-        )
-
+        val account = account
         assertTrue(account.hasValidUUID())
     }
 
@@ -33,24 +27,33 @@ class AccountTest {
     // TODO -> que al crearse la cuenta tenga un listado de 0 transacciones
     @Test
     fun `should have no transactions when just created`() {
-        val customerIdForTests = CustomerId.generate()
-        val account = Account(
-            currency = Currency.USD,
-            holder = customerIdForTests
-        )
-
+        val account = account
         assertFalse(account.hasTransactions())
     }
 
     // TODO -> si la transaccion es de tipo DEPOSIT, REFUND o REVERSAL, el balance debe incrementarse
+    @Test
+    fun `should increment balance if transaction is a deposit, refund or reversal`() {
+        val account = account
+        val transaction = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+
+        account.addTransaction(transaction)
+        assertTrue(account.hasThisBalance(100.0))
+    }
 
     // TODO -> si la transaccion es de tipo WITHDRAWAL, PURCHASE, FEE, el balance debe reducirse
+    @Test
+    fun `should increment balance if transaction is a withdrawal, purchase or fee`() {
+
+    }
 
     // TODO -> nunca puede ser con un monto negativo
 
     //    balance
-    // TODO -> al momento de crearse debe ser 0
-
     // TODO -> nunca puede ser un monto negativo
 
 
