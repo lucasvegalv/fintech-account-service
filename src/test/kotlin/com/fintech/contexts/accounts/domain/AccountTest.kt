@@ -43,17 +43,48 @@ class AccountTest {
         assertTrue(account.hasThisBalance(100.0))
     }
 
-    // TODO -> si la transaccion es de tipo WITHDRAWAL, PURCHASE, FEE, el balance debe reducirse
-//    @Test
-//    fun `should increment balance if transaction is a withdrawal, purchase or fee`() {
-//
-//    }
+    @Test
+    fun `should decrement balance if transaction is a withdrawal, purchase or fee`() {
+        val account = account
+        val deposit = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+        val withdrawal = Transaction(
+            amount = BigDecimal(25.00),
+            currency = Currency.USD,
+            type = TransactionType.WITHDRAWAL,
+        )
 
-    // TODO -> nunca puede ser con un monto negativo
+        account.addTransaction(deposit)
+        assertTrue(account.hasThisBalance(100.0))
+        account.addTransaction(withdrawal)
+        assertTrue(account.hasThisBalance(75.0))
+    }
 
-    //    balance
-    // TODO -> nunca puede ser un monto negativo
+    @Test
+    fun `should never be a negative transaction amount`() {
+        val account = account
+        val deposit = Transaction(
+            amount = BigDecimal(50.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+        account.addTransaction(deposit)
 
+        val withdrawal = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.WITHDRAWAL,
+        )
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            account.addTransaction(withdrawal)
+        }
+
+        assertEquals(exception.message, "Balance can not be a negative amount")
+    }
 
 
     //    status (PENDING_APPROVAL, ACTIVE, SUSPENDED, BLOCKED, CLOSED)
@@ -78,5 +109,7 @@ class AccountTest {
 
     // TODO -> para pasar a CLOSED debe tener balance 0
 
-    // TODO -> que se cree correctamente si esta completo (se ingresan todos los datos)
+    // TODO -> un customer solo puede tener una cuenta
+
+    // TODO -> dos customers con distinto customerId deben tener cuentas con accountNumber diferente
 }

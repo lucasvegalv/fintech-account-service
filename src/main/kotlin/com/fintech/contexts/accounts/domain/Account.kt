@@ -25,7 +25,10 @@ class Account (
         if(transaction.incrementsBalance()) {
             this.balance += transaction.amount // Rompemos encapsulamiento con getAmount para no acoplar de responsabilidad innecesaria a Transaction.
         } else {
-            this.balance -= transaction.amount
+            val potentialNewBalance = this.balance.subtract(transaction.amount)
+            check(potentialNewBalance >= BigDecimal.ZERO) { "Balance can not be a negative amount" }
+
+            this.balance = potentialNewBalance
         }
 
         transactions.add(transaction)
