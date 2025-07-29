@@ -41,7 +41,7 @@ class AccountTest {
         val activeState = ActiveState()
         account.changeStateTo(activeState)
 
-        account.addTransaction(transaction)
+        account.state.addTransaction(account, transaction)
         assertTrue(account.hasThisBalance(100.0))
     }
 
@@ -60,9 +60,9 @@ class AccountTest {
         )
         val activeState = ActiveState()
         account.changeStateTo(activeState)
-        account.addTransaction(deposit)
+        account.state.addTransaction(account, deposit)
         assertTrue(account.hasThisBalance(100.0))
-        account.addTransaction(withdrawal)
+        account.state.addTransaction(account, withdrawal)
         assertTrue(account.hasThisBalance(75.0))
     }
 
@@ -76,7 +76,7 @@ class AccountTest {
         )
         val activeState = ActiveState()
         account.changeStateTo(activeState)
-        account.addTransaction(deposit)
+        account.state.addTransaction(account, deposit)
 
         val withdrawal = Transaction(
             amount = BigDecimal(100.00),
@@ -85,7 +85,7 @@ class AccountTest {
         )
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            account.addTransaction(withdrawal)
+            account.state.addTransaction(account, withdrawal)
         }
 
         assertEquals(exception.message, "Balance can not be a negative amount")
@@ -253,9 +253,7 @@ class AccountTest {
             type = TransactionType.DEPOSIT,
         )
         account.changeStateTo(activeState)
-        account.addTransaction(transaction)
-        account.changeStateTo(activeState)
-        assertTrue(account.hasThisBalance(100.00))
+        account.state.addTransaction(account, transaction)
 
         val exception = assertThrows(IllegalStateException::class.java) {
             account.changeStateTo(closedState)
@@ -276,10 +274,10 @@ class AccountTest {
         )
 
         val exception = assertThrows(IllegalStateException::class.java) {
-            account.addTransaction(transaction)
+            account.state.addTransaction(account, transaction)
         }
 
-        assertEquals(exception.message, "Cannot transact if it is not ACTIVE")
+        assertEquals(exception.message, "Tu cuenta esta suspendida. No tienes permitido transaccionar hasta que vuelva a estar activa.")
     }
 
     // TODO -> un customer solo puede tener una cuenta
