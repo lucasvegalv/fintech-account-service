@@ -38,45 +38,249 @@ class AccountTest {
             currency = Currency.USD,
             type = TransactionType.DEPOSIT,
         )
+        val activeState = ActiveState()
+        account.changeStateTo(activeState)
 
-        account.addTransaction(transaction)
+        account.state.addTransaction(account, transaction)
         assertTrue(account.hasThisBalance(100.0))
     }
 
-    // TODO -> si la transaccion es de tipo WITHDRAWAL, PURCHASE, FEE, el balance debe reducirse
-//    @Test
-//    fun `should increment balance if transaction is a withdrawal, purchase or fee`() {
-//
-//    }
+    @Test
+    fun `should decrement balance if transaction is a withdrawal, purchase or fee`() {
+        val account = account
+        val deposit = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+        val withdrawal = Transaction(
+            amount = BigDecimal(25.00),
+            currency = Currency.USD,
+            type = TransactionType.WITHDRAWAL,
+        )
+        val activeState = ActiveState()
+        account.changeStateTo(activeState)
+        account.state.addTransaction(account, deposit)
+        assertTrue(account.hasThisBalance(100.0))
+        account.state.addTransaction(account, withdrawal)
+        assertTrue(account.hasThisBalance(75.0))
+    }
 
-    // TODO -> nunca puede ser con un monto negativo
+    @Test
+    fun `should never be a negative transaction amount`() {
+        val account = account
+        val deposit = Transaction(
+            amount = BigDecimal(50.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+        val activeState = ActiveState()
+        account.changeStateTo(activeState)
+        account.state.addTransaction(account, deposit)
 
-    //    balance
-    // TODO -> nunca puede ser un monto negativo
+        val withdrawal = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.WITHDRAWAL,
+        )
 
+        val exception = assertThrows(IllegalStateException::class.java) {
+            account.state.addTransaction(account, withdrawal)
+        }
 
+        assertEquals(exception.message, "Balance can not be a negative amount")
+    }
 
-    //    status (PENDING_APPROVAL, ACTIVE, SUSPENDED, BLOCKED, CLOSED)
-    // TODO -> validar los posibles state-transitions
+    @Test
+    fun `should be initialize with PENDING_APPROVAL state`() {
+        val account = account
+        assertTrue(account.isPendingApprove())
+    }
 
-        // PENDING_APPROVAL -> ACTIVE
-        // PENDING_APPROVAL -> CLOSED
+    @Test
+    fun `should change to ACTIVE when is PENDING_APPROVAL`() {
+        val account = account
+        val activeState = ActiveState()
+        account.changeStateTo(activeState)
 
-        // ACTIVE -> SUSPENDED
-        // ACTIVE -> BLOCKED
-        // ACTIVE -> CLOSED
+        assertTrue(account.isActive())
+    }
 
-        // SUSPENDED -> ACTIVE
-        // SUSPENDED -> BLOCKED
-        // SUSPENDED -> CLOSED
+    @Test
+    fun `should change to CLOSED when is PENDING_APPROVAL`() {
+        val account = account
+        val closeState = ClosedState()
+        account.changeStateTo(closeState)
 
-        // BLOCKED -> ACTIVE
-        // BLOCKED -> SUSPENDED
-        // BLOCKED -> CLOSED
+        assertTrue(account.isClosed())
+    }
 
-        // CLOSED -> * (a nada, es estado final)
+    @Test
+    fun `should change to SUSPENDED when is ACTIVE`() {
+        val account = account
+        val activeState = ActiveState()
+        val suspendedState = SuspendedState()
+        account.changeStateTo(activeState)
+        account.changeStateTo(suspendedState)
 
-    // TODO -> para pasar a CLOSED debe tener balance 0
+        assertTrue(account.isSuspended())
+    }
 
-    // TODO -> que se cree correctamente si esta completo (se ingresan todos los datos)
+    @Test
+    fun `should change to BLOCKED when is ACTIVE`() {
+        val account = account
+        val activeState = ActiveState()
+        val blockedState = BlockedState()
+        account.changeStateTo(activeState)
+        account.changeStateTo(blockedState)
+
+        assertTrue(account.isBlocked())
+    }
+
+    @Test
+    fun `should change to CLOSED when is ACTIVE`() {
+        val account = account
+        val activeState = ActiveState()
+        val closedState = ClosedState()
+        account.changeStateTo(activeState)
+        account.changeStateTo(closedState)
+
+        assertTrue(account.isClosed())
+    }
+
+    @Test
+    fun `should change to ACTIVE when is SUSPENDED`() {
+        val account = account
+        val suspendedState = SuspendedState()
+        val activeState = ActiveState()
+        account.changeStateTo(suspendedState)
+        account.changeStateTo(activeState)
+
+        assertTrue(account.isActive())
+    }
+
+    @Test
+    fun `should change to CLOSED when is SUSPENDED`() {
+        val account = account
+        val suspendedState = SuspendedState()
+        val closedState = ClosedState()
+        account.changeStateTo(suspendedState)
+        account.changeStateTo(closedState)
+
+        assertTrue(account.isClosed())
+    }
+
+    @Test
+    fun `should change to BLOCKED when is SUSPENDED`() {
+        val account = account
+        val suspendedState = SuspendedState()
+        val blockedState = BlockedState()
+        account.changeStateTo(suspendedState)
+        account.changeStateTo(blockedState)
+
+        assertTrue(account.isBlocked())
+    }
+
+    @Test
+    fun `should change to ACTIVE when is BLOCKED`() {
+        val account = account
+        val blockedState = BlockedState()
+        val activeState = ActiveState()
+        account.changeStateTo(blockedState)
+        account.changeStateTo(activeState)
+
+        assertTrue(account.isActive())
+    }
+
+    @Test
+    fun `should change to SUSPENDED when is BLOCKED`() {
+        val account = account
+        val blockedState = BlockedState()
+        val suspendedState = SuspendedState()
+        account.changeStateTo(blockedState)
+        account.changeStateTo(suspendedState)
+
+        assertTrue(account.isSuspended())
+    }
+
+    @Test
+    fun `should change to CLOSED when is BLOCKED`() {
+        val account = account
+        val blockedState = BlockedState()
+        val closedState = ClosedState()
+        account.changeStateTo(blockedState)
+        account.changeStateTo(closedState)
+
+        assertTrue(account.isClosed())
+    }
+
+    @Test
+    fun `should not be allowed to change from CLOSED to any other state`() {
+        val account = account
+        val closedState = ClosedState()
+        val activeState = ActiveState()
+        account.changeStateTo(closedState)
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            account.changeStateTo(activeState)
+        }
+
+        assertEquals(exception.message, "Cannot change from CLOSED to any other state because it is a terminal state.")
+    }
+
+    @Test
+    fun `should not be allowed to change from any state to PENDING_APPROVAL`() {
+        val account = account
+        val suspendedState = SuspendedState()
+        val pendingApprovalState = PendingApprovalState()
+        account.changeStateTo(suspendedState)
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            account.changeStateTo(pendingApprovalState)
+        }
+
+        assertEquals(exception.message, "Cannot change to PENDING_APPROVAL because it is just an initial state.")
+    }
+
+    @Test
+    fun `should have no balance to change to CLOSED`() {
+        val account = account
+        val activeState = ActiveState()
+        val closedState = ClosedState()
+        val transaction = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+        account.changeStateTo(activeState)
+        account.state.addTransaction(account, transaction)
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            account.changeStateTo(closedState)
+        }
+
+        assertEquals(exception.message, "To change to CLOSED state, the balance must be zero.")
+    }
+
+    @Test
+    fun `should be allowed to transact just when is ACTIVE` () {
+        val account = account
+        val suspendedState = SuspendedState()
+        account.changeStateTo(suspendedState)
+        val transaction = Transaction(
+            amount = BigDecimal(100.00),
+            currency = Currency.USD,
+            type = TransactionType.DEPOSIT,
+        )
+
+        val exception = assertThrows(IllegalStateException::class.java) {
+            account.state.addTransaction(account, transaction)
+        }
+
+        assertEquals(exception.message, "Tu cuenta esta suspendida. No tienes permitido transaccionar hasta que vuelva a estar activa.")
+    }
+
+    // TODO -> un customer solo puede tener una cuenta
+
+    // TODO -> dos customers con distinto customerId deben tener cuentas con accountNumber diferente
 }
