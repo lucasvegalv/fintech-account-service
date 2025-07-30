@@ -2,27 +2,27 @@ package com.fintech.contexts.accounts.domain
 
 import com.fintech.contexts.customers.domain.CustomerId
 import java.math.BigDecimal
-import org.slf4j.LoggerFactory
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
 class Account (
-    val currency: Currency,
-    val holder: CustomerId
+    private val currency: Currency,
+    private val holder: CustomerId
 ){
-     var state: AccountState = PendingApprovalState()
-     var balance: BigDecimal = BigDecimal.ZERO
-    private val accountNumber: String = "123456789112"
+    internal var state: AccountState = PendingApprovalState()
+    private var balance: BigDecimal = BigDecimal.ZERO
+    val accountNumber: AccountNumberId = AccountNumberId.generate()
     private val accountId = AccountId.generate()
     private val transactions: MutableList<Transaction> = mutableListOf()
 
 
 
     fun hasValidUUID(): Boolean = this.accountId.value.startsWith("acc")
-    fun hasAValidAccountNumber(): Boolean = this.accountNumber.length == 12 && this.accountNumber.all { it.isDigit() }
+    fun hasAValidAccountNumber(): Boolean = this.accountNumber.value.length == 12 && this.accountNumber.value.all { it.isDigit() }
     fun hasTransactions(): Boolean = this.transactions.isNotEmpty()
     fun hasThisBalance(balanceToCompareWith: Double): Boolean = this.balance.compareTo(BigDecimal.valueOf(balanceToCompareWith)) == 0
+    fun hasThisAccountNumber(accountNumberToCompareWith: String): Boolean = this.accountNumber.value == accountNumberToCompareWith
 
 
     // TODO: Refactor this repetitive code
@@ -41,7 +41,7 @@ class Account (
         this.state = newState
     }
 
-    internal fun incrementBalance(amount: BigDecimal) {
+    private fun incrementBalance(amount: BigDecimal) {
         logger.info { "Balance for account #$accountId before increase is $$balance" }
         this.balance += amount
         logger.info { "Incrementing balance for account #$accountId by $$amount" }
@@ -49,7 +49,7 @@ class Account (
 
     }
 
-    internal fun reduceBalance(amount: BigDecimal) {
+    private fun reduceBalance(amount: BigDecimal) {
         val potentialNewBalance = this.balance.subtract(amount)
         check(potentialNewBalance.compareTo(BigDecimal.ZERO) >= 0) { "Balance can not be a negative amount" }
         logger.info { "Balance for account #$accountId before subtract is $$balance" }
@@ -68,5 +68,6 @@ class Account (
         this.transactions.add(transaction)
         logger.info { "Added transaction #${transaction.transactionId} for account #$accountId" }
     }
+
 }
 

@@ -280,7 +280,14 @@ class AccountTest {
         assertEquals(exception.message, "Tu cuenta esta suspendida. No tienes permitido transaccionar hasta que vuelva a estar activa.")
     }
 
-    // TODO -> un customer solo puede tener una cuenta
+    @Test
+    fun `should have a different account if it is another customerId` () {
+        val firstAccount = account
+        val secondAccount = Account (currency = Currency.BRL, holder = CustomerId.generate())
 
-    // TODO -> dos customers con distinto customerId deben tener cuentas con accountNumber diferente
+        println(firstAccount.accountNumber.value)
+        println(secondAccount.accountNumber.value)
+        assertFalse(firstAccount.hasThisAccountNumber(secondAccount.accountNumber.value))
+    }
+
 }
